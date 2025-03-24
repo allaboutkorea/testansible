@@ -1,0 +1,24 @@
+- name: installing web server or changing port
+  become: true
+  hosts: all
+  vars_files:
+    vars.yml
+  tasks:
+    - name: installing web server
+      yum:
+        name: httpd
+        state: present
+
+    - name: changing port
+      lineinfile:
+        dest: /etc/httpd/conf/httpd.conf
+        regexp: '^Listen [0-9]{1,5}$'
+        line: Listen {{ webport }}
+      notify:
+        - restartweb
+
+  handlers:
+    - name: restartweb
+      service:
+        name: httpd
+        sate: restarted
