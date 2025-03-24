@@ -21,4 +21,4 @@
     - name: restartweb
       service:
         name: httpd
-        sate: restarted
+        state: restarted
